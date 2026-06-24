@@ -1,146 +1,263 @@
 <!DOCTYPE html>
 <html lang="en">
-
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>My Portfolio</title>
-        <link rel="stylesheet" href="portfolio.css" />
-    </head>
-
-    <body>
-
-        <header>
-            <div class="container">
-                <h1 class="logo">Yoseph</h1>
-                <nav id="nav-menu">
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#skills">Skills</a></li>
-                        <li><a href="#projects">Projects</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </nav>
-                <div class="menu-toggle" id="menu-toggle">☰</div>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yoseph Tilahun - Portfolio</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Boxicons for modern icons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="portfolio.css" />
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="header">
+        <div class="container nav-container">
+            <a href="#home" class="logo">Yoseph<span>.</span></a>
+            <nav id="nav-menu" class="nav-menu">
+                <ul class="nav-list">
+                    <li><a href="#home" class="nav-link active">Home</a></li>
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="#skills" class="nav-link">Skills</a></li>
+                    <li><a href="#projects" class="nav-link">Projects</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="menu-toggle" id="menu-toggle">
+                <i class='bx bx-menu'></i>
             </div>
-        </header>
+        </div>
+    </header>
 
+    <main>
         <!-- Hero Section -->
-        <section id="home" class="hero">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h2 class="greeting">Hello, I'm <span>Yoseph Tilahun</span></h2>
-                    <p>A passionate web developer creating modern and responsive websites.</p>
-                    <a href="#projects" class="btn">View My Work</a>
+        <section id="home" class="hero section">
+            <div class="container hero-container grid">
+                <div class="hero-text reveal">
+                    <span class="subtitle">Welcome to my portfolio</span>
+                    <h1 class="title">Hi, I'm <span class="accent">Yoseph Tilahun</span></h1>
+                    <h2 class="role typing-text">A Passionate Web Developer.</h2>
+                    <p class="description">
+                        I craft high-performing, interactive, and visually stunning web applications that deliver exceptional user experiences.
+                    </p>
+                    <div class="hero-btns">
+                        <a href="#projects" class="btn btn-primary">View My Work</a>
+                        <a href="Cv5.pdf" class="btn btn-secondary">Download CV</a>
+                    </div>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/feed/" target="_blank"><i class='bx bxl-linkedin'></i></a>
+                        <a href="https://t.me/yosibdu" target="_blank"><i class='bx bxl-telegram'></i></a>
+                        <a href="https://www.instagram.com/yoseph3856/" target="_blank"><i class='bx bxl-instagram'></i></a>
+                        <a href="https://wa.me/251905217674" target="_blank"><i class='bx bxl-whatsapp'></i></a>
+                    </div>
                 </div>
 
-                <!-- 👇 Your Photo -->
-                <div class="hero-photo">
-                    <img src="image/yose.JPG" alt="Yoseph Tilahun">
+                <div class="hero-image reveal">
+                    <div class="image-wrapper">
+                        <img src="image/yose.JPG" alt="Yoseph Tilahun">
+                        <div class="glow-effect"></div>
+                    </div>
                 </div>
+            </div>
+            <div class="scroll-down">
+                <a href="#about"><i class='bx bx-mouse'></i> Scroll Down</a>
             </div>
         </section>
 
         <!-- About Section -->
-        <section id="about">
+        <section id="about" class="about section">
             <div class="container">
-                <h2>About Me</h2>
-                <p>
-    I am a Computer Science graduate and a passionate full-stack developer with experience in building
-    modern, responsive, and user-friendly web applications. I enjoy turning complex problems into
-    simple and effective solutions. During my internship, I participated in web application development
-    and gained practical experience working in a professional environment. I have developed projects
-    such as a School Student Management System using Laravel and MySQL. I am continuously learning new
-    technologies and striving to improve my skills in web development, mobile app development, graphic
-    design, and video editing.
-</p>
+                <div class="section-title reveal">
+                    <h2>About <span class="accent">Me</span></h2>
+                    <p>Get to know my background and expertise.</p>
+                </div>
+                <div class="about-content grid reveal">
+                    <div class="about-text glass-card">
+                        <i class='bx bx-code-alt about-icon'></i>
+                        <h3>Who I Am</h3>
+                        <p>
+                            I am a Computer Science graduate and a passionate full-stack developer with experience in building
+                            modern, responsive, and user-friendly web applications. I enjoy turning complex problems into
+                            simple and effective solutions.
+                        </p>
+                        <p>
+                            During my internship, I participated in web application development and gained practical experience working in a professional environment. I have developed projects such as a School Student Management System using Laravel and MySQL. I am continuously learning new technologies and striving to improve my skills in web development, mobile app development, graphic design, and video editing.
+                        </p>
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- Skills Section -->
-        <section id="skills">
+        <section id="skills" class="skills section">
             <div class="container">
-                <h2>Skills</h2>
-                <div class="skills-grid">
-                    <div class="skill">HTML</div>
-                    <div class="skill">CSS</div>
-                    <div class="skill">JavaScript</div>
-                    <div class="skill">Laravel</div>
-                    <div class="skill">React</div>
-                    <div class="skill">PHP</div><br><br><br>
-                   <div><a href="Cv5.pdf">see my cv</a></div> 
+                <div class="section-title reveal">
+                    <h2>My <span class="accent">Skills</span></h2>
+                    <p>Technologies and tools I work with.</p>
+                </div>
+                <div class="skills-grid grid reveal">
+                    <div class="skill-card glass-card">
+                        <i class='bx bxl-html5 skill-icon html'></i>
+                        <h3>HTML5</h3>
+                    </div>
+                    <div class="skill-card glass-card">
+                        <i class='bx bxl-css3 skill-icon css'></i>
+                        <h3>CSS3</h3>
+                    </div>
+                    <div class="skill-card glass-card">
+                        <i class='bx bxl-javascript skill-icon js'></i>
+                        <h3>JavaScript</h3>
+                    </div>
+                    <div class="skill-card glass-card">
+                        <i class='bx bxl-react skill-icon react'></i>
+                        <h3>React</h3>
+                    </div>
+                    <div class="skill-card glass-card">
+                        <i class='bx bxl-php skill-icon php'></i>
+                        <h3>PHP</h3>
+                    </div>
+                    <div class="skill-card glass-card">
+                        <i class='bx bx-data skill-icon db'></i>
+                        <h3>Laravel & MySQL</h3>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Projects Section -->
-        <section id="projects">
+        <section id="projects" class="projects section">
             <div class="container">
-                <h2>Projects</h2>
-                <div class="projects-grid">
-                    <div class="project-card">
-                        <h3>Personal Expense Tracker</h3>
-                        <p>A web app to manage daily income and expenses efficiently.</p>
+                <div class="section-title reveal">
+                    <h2>Featured <span class="accent">Projects</span></h2>
+                    <p>A selection of my recent work.</p>
+                </div>
+                <div class="projects-grid grid">
+                    
+                    <!-- Project 1 -->
+                    <div class="project-card glass-card reveal">
+                        <div class="project-img">
+                            <img src="image/expense_tracker_mockup_1782330623655.png" alt="Personal Expense Tracker">
+                        </div>
+                        <div class="project-info">
+                            <h3>Personal Expense Tracker</h3>
+                            <p>A web app to manage daily income and expenses efficiently. Monitor spending habits with beautiful charts.</p>
+                            <a href="#" class="btn btn-sm">View Details</a>
+                        </div>
                     </div>
-                    <div class="project-card">
-                        <h3>Farmers Connect</h3>
-                        <p>A platform connecting local farmers with buyers.</p>
+
+                    <!-- Project 2 -->
+                    <div class="project-card glass-card reveal">
+                        <div class="project-img">
+                            <img src="image/farmers_connect_mockup_1782330639150.png" alt="Farmers Connect">
+                        </div>
+                        <div class="project-info">
+                            <h3>Farmers Connect</h3>
+                            <p>A platform connecting local farmers directly with buyers to foster local economy and fresh produce trade.</p>
+                            <a href="#" class="btn btn-sm">View Details</a>
+                        </div>
                     </div>
-                    <div class="project-card">
-                        <p>Modern student information and management system.</p>
-                        <a href="https://yoseph.42web.io/highschool/?i=1">Use this link</a>
+
+                    <!-- Project 3 -->
+                    <div class="project-card glass-card reveal">
+                        <div class="project-img">
+                            <img src="image/student_management_mockup_1782330650558.png" alt="Student Management System">
+                        </div>
+                        <div class="project-info">
+                            <h3>Student Management System</h3>
+                            <p>Modern student information and management system built with Laravel and MySQL.</p>
+                            <a href="https://yoseph.42web.io/highschool/?i=1" target="_blank" class="btn btn-sm"><i class='bx bx-link-external'></i> Live Demo</a>
+                        </div>
                     </div>
-                       <div class="project-card">
-                        <p>home based service finding solution</p>
-                        <a href="https://github.com/Yoseph2123/Final-project.git">Use this link</a>
+
+                    <!-- Project 4 -->
+                    <div class="project-card glass-card reveal">
+                        <div class="project-img">
+                            <img src="image/home_service_mockup_1782330663756.png" alt="Home Service App">
+                        </div>
+                        <div class="project-info">
+                            <h3>Home Service Finder</h3>
+                            <p>A robust home-based service finding solution to connect customers with professional service providers.</p>
+                            <a href="https://github.com/Yoseph2123/Final-project.git" target="_blank" class="btn btn-sm"><i class='bx bxl-github'></i> Source Code</a>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </section>
 
         <!-- Contact Section -->
-        <section id="contact">
+        <section id="contact" class="contact section">
             <div class="container">
-                <h2>Contact Me</h2>
-                <form action="portfolio.php" method="POST">
-                    <input type="text" name="name" placeholder="Your Name" required />
-                    <input type="email" name="email" placeholder="Your Email" required />
-                    <textarea name="message" placeholder="Your Message" required></textarea>
-                    <button type="submit" class="btn">Send</button>
-                </form>
+                <div class="section-title reveal">
+                    <h2>Get In <span class="accent">Touch</span></h2>
+                    <p>Let's work together on your next project.</p>
+                </div>
+                <div class="contact-content grid reveal">
+                    <div class="contact-info glass-card">
+                        <h3>Contact Information</h3>
+                        <p>Feel free to reach out to me directly through any of the following channels.</p>
+                        
+                        <div class="info-item">
+                            <i class='bx bx-envelope'></i>
+                            <div>
+                                <h4>Email</h4>
+                                <a href="mailto:yositilahun21@gmail.com">yositilahun21@gmail.com</a>
+                            </div>
+                        </div>
+                        
+                        <div class="info-item">
+                            <i class='bx bxl-whatsapp'></i>
+                            <div>
+                                <h4>WhatsApp</h4>
+                                <a href="https://wa.me/251905217674" target="_blank">+251 905 217 674</a>
+                            </div>
+                        </div>
 
+                        <div class="info-item">
+                            <i class='bx bx-map'></i>
+                            <div>
+                                <h4>Location</h4>
+                                <span>Ethiopia</span>
+                            </div>
+                        </div>
+                    </div>
 
-            </div>
-        </section>
-        <section id="contact">
-            <div class="container">
-                <h2>Contact Me</h2>
-                <p>You can reach me directly:</p>
-
-                <div class="contact-links">
-                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=yositilahun21@gmail.com" target="_blank"
-                        class="btn">
-                        Email Me
-                    </a>
-                    <a href="https://www.instagram.com/yoseph3856/" target="_blank" class="btn">
-                        Instagram
-                    </a>
-
-                    <a href="https://wa.me/251905217674" class="btn">WhatsApp</a>
-                    <a href="https://www.linkedin.com/feed/" class="btn">LinkedIn</a>
-                    <a href="https://t.me/yosibdu" class="btn">Telegram</a>
-
+                    <div class="contact-form glass-card">
+                        <form action="portfolio.php" method="POST" id="contactForm">
+                            <div class="input-group">
+                                <input type="text" name="name" id="name" required placeholder=" " />
+                                <label for="name">Your Name</label>
+                            </div>
+                            <div class="input-group">
+                                <input type="email" name="email" id="email" required placeholder=" " />
+                                <label for="email">Your Email</label>
+                            </div>
+                            <div class="input-group">
+                                <textarea name="message" id="message" required placeholder=" "></textarea>
+                                <label for="message">Your Message</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary submit-btn">
+                                Send Message <i class='bx bx-send'></i>
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </section>
+    </main>
 
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-logo">Yoseph<span>.</span></div>
+            <p>© 2026 Yoseph Tilahun. All rights reserved.</p>
+            <div class="social-links footer-socials">
+                <a href="https://www.linkedin.com/feed/" target="_blank"><i class='bx bxl-linkedin'></i></a>
+                <a href="https://t.me/yosibdu" target="_blank"><i class='bx bxl-telegram'></i></a>
+            </div>
+        </div>
+    </footer>
 
-        <footer>
-            <p>© 2025 Yoseph Tilahun. All rights reserved.</p>
-        </footer>
-
-        <script src="portfolio.js"></script>
-    </body>
-
+    <script src="portfolio.js"></script>
+</body>
 </html>
