@@ -21,6 +21,7 @@
                     <li><a href="#about" class="nav-link">About</a></li>
                     <li><a href="#skills" class="nav-link">Skills</a></li>
                     <li><a href="#projects" class="nav-link">Projects</a></li>
+                    <li><a href="#videos" class="nav-link">Videos</a></li>
                     <li><a href="#contact" class="nav-link">Contact</a></li>
                 </ul>
             </nav>
@@ -37,9 +38,9 @@
                 <div class="hero-text reveal">
                     <span class="subtitle">Welcome to my portfolio</span>
                     <h1 class="title">Hi, I'm <span class="accent">Yoseph Tilahun</span></h1>
-                    <h2 class="role typing-text">A Passionate Web Developer.</h2>
+                    <h2 class="role typing-text">Web Developer & Video Editor</h2>
                     <p class="description">
-                        I craft high-performing, interactive, and visually stunning web applications that deliver exceptional user experiences.
+                        I craft high-performing web applications and produce engaging, high-quality video content that delivers exceptional visual experiences.
                     </p>
                     <div class="hero-btns">
                         <a href="#projects" class="btn btn-primary">View My Work</a>
@@ -121,6 +122,10 @@
                         <i class='bx bx-data skill-icon db'></i>
                         <h3>Laravel & MySQL</h3>
                     </div>
+                    <div class="skill-card glass-card">
+                        <i class='bx bxs-video-recording skill-icon video'></i>
+                        <h3>Video Editing</h3>
+                    </div>
                 </div>
             </div>
         </section>
@@ -182,6 +187,40 @@
                         </div>
                     </div>
 
+                </div>
+            </div>
+        </section>
+
+        <!-- Video Editing & Showcase Section -->
+        <section id="videos" class="videos section">
+            <div class="container">
+                <div class="section-title reveal">
+                    <h2>Video <span class="accent">Showcase</span></h2>
+                    <p>Edited videos, commercial projects, cinematic reels, and dynamic motion graphics.</p>
+                </div>
+
+                <div class="videos-toolbar reveal">
+                    <div class="video-filters" id="videoFilters">
+                        <button class="filter-btn active" data-filter="all">All Videos</button>
+                        <button class="filter-btn" data-filter="Cinematic">Cinematic</button>
+                        <button class="filter-btn" data-filter="Commercial">Commercial</button>
+                        <button class="filter-btn" data-filter="Reels/Shorts">Reels & Shorts</button>
+                        <button class="filter-btn" data-filter="Motion Graphics">Motion Graphics</button>
+                        <button class="filter-btn" data-filter="Music Video">Music Video</button>
+                    </div>
+                    <div class="video-admin-controls">
+                        <button class="btn btn-primary upload-trigger-btn admin-only" id="openUploadModalBtn">
+                            <i class='bx bx-cloud-upload'></i> Upload Video
+                        </button>
+                        <button class="admin-auth-toggle-btn" id="adminAuthBtn" title="Creator Admin Access" aria-label="Admin Access">
+                            <i class='bx bx-lock-alt'></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Videos Grid Container -->
+                <div class="videos-grid grid reveal" id="videosGrid">
+                    <!-- Populated dynamically via portfolio.js -->
                 </div>
             </div>
         </section>
@@ -257,6 +296,186 @@
             </div>
         </div>
     </footer>
+
+    <!-- Video Upload Modal -->
+    <div class="modal-overlay" id="uploadModal" aria-hidden="true" role="dialog">
+        <div class="modal-container glass-card">
+            <div class="modal-header">
+                <h3><i class='bx bx-video-plus accent'></i> Upload Edited Video</h3>
+                <button type="button" class="modal-close-btn" id="closeUploadModalBtn" aria-label="Close modal">
+                    <i class='bx bx-x'></i>
+                </button>
+            </div>
+
+            <form id="videoUploadForm" class="video-upload-form">
+                <!-- Source Toggle Tabs -->
+                <div class="upload-source-tabs">
+                    <button type="button" class="tab-btn active" data-source="file" id="tabSourceFile">
+                        <i class='bx bx-upload'></i> Video File
+                    </button>
+                    <button type="button" class="tab-btn" data-source="url" id="tabSourceUrl">
+                        <i class='bx bx-link'></i> Video Link / YouTube
+                    </button>
+                </div>
+
+                <!-- Source: Local Video File Dropzone -->
+                <div class="source-content" id="sourceFileContent">
+                    <div class="drop-zone" id="videoDropZone">
+                        <i class='bx bx-cloud-upload drop-icon'></i>
+                        <p class="drop-text">Drag & drop your video here, or <span class="accent">browse</span></p>
+                        <span class="file-hint">Supports MP4, WebM, MOV, MKV (Auto-generates thumbnail)</span>
+                        <input type="file" id="videoFileInput" accept="video/mp4,video/webm,video/quicktime,video/x-matroska" hidden />
+                    </div>
+                    <div class="file-preview-status" id="filePreviewStatus" style="display: none;">
+                        <div class="file-preview-info">
+                            <i class='bx bx-film'></i>
+                            <span id="fileNameDisplay">video.mp4</span>
+                        </div>
+                        <button type="button" id="removeFileBtn" class="btn-danger-icon" title="Remove file">
+                            <i class='bx bx-trash'></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Source: Video URL/Embed -->
+                <div class="source-content" id="sourceUrlContent" style="display: none;">
+                    <div class="input-group">
+                        <input type="url" id="videoUrlInput" placeholder=" " />
+                        <label for="videoUrlInput">Video URL (YouTube, Vimeo, or direct MP4 link)</label>
+                    </div>
+                    <small class="field-hint">Paste a YouTube link or direct video URL to embed</small>
+                </div>
+
+                <!-- Video Title -->
+                <div class="input-group">
+                    <input type="text" id="videoTitleInput" required placeholder=" " />
+                    <label for="videoTitleInput">Project / Video Title</label>
+                </div>
+
+                <!-- Category Selection (Multi-select Chips) -->
+                <div class="category-selection-container">
+                    <label class="static-label">
+                        Select Categories <span class="hint-text">(Click to choose where this video will appear)</span>
+                    </label>
+                    <div class="category-chips-grid" id="categoryChips">
+                        <button type="button" class="category-chip active" data-value="Cinematic">
+                            <i class='bx bx-movie'></i> Cinematic
+                        </button>
+                        <button type="button" class="category-chip" data-value="Commercial">
+                            <i class='bx bx-briefcase-alt-2'></i> Commercial
+                        </button>
+                        <button type="button" class="category-chip" data-value="Reels/Shorts">
+                            <i class='bx bx-mobile-vibration'></i> Reels & Shorts
+                        </button>
+                        <button type="button" class="category-chip" data-value="Motion Graphics">
+                            <i class='bx bx-shape-polygon'></i> Motion Graphics
+                        </button>
+                        <button type="button" class="category-chip" data-value="Music Video">
+                            <i class='bx bx-music'></i> Music Video
+                        </button>
+                    </div>
+                    <input type="hidden" id="videoCategoryInput" value="Cinematic" />
+                </div>
+
+                <!-- Software Used -->
+                <div class="input-group software-input-group">
+                    <input type="text" id="videoSoftwareInput" placeholder=" " />
+                    <label for="videoSoftwareInput">Software Used (e.g., Premiere Pro, DaVinci, After Effects, CapCut)</label>
+                </div>
+
+                <!-- Description -->
+                <div class="input-group">
+                    <textarea id="videoDescInput" rows="3" placeholder=" "></textarea>
+                    <label for="videoDescInput">Short Description / Editing Highlights</label>
+                </div>
+
+                <!-- Modal Actions -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelUploadBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="saveVideoSubmitBtn">
+                        <i class='bx bx-check'></i> Add to Showcase
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Video Player Lightbox / Theater Modal -->
+    <div class="modal-overlay" id="videoPlayerModal" aria-hidden="true" role="dialog">
+        <div class="modal-container glass-card player-modal-container">
+            <div class="modal-header">
+                <h3 id="playerModalTitle"><i class='bx bx-play-circle accent'></i> Video Preview</h3>
+                <button type="button" class="modal-close-btn" id="closePlayerModalBtn" aria-label="Close player">
+                    <i class='bx bx-x'></i>
+                </button>
+            </div>
+
+            <div class="player-wrapper" id="playerWrapper">
+                <!-- HTML5 video or iframe inserted dynamically -->
+            </div>
+
+            <div class="player-details">
+                <div class="player-tags" id="playerTags">
+                    <!-- Category & Software badges -->
+                </div>
+                <p class="player-desc" id="playerDesc"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Edit Categories Modal -->
+    <div class="modal-overlay" id="editCategoryModal" aria-hidden="true" role="dialog">
+        <div class="modal-container glass-card" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3><i class='bx bx-purchase-tag-alt accent'></i> Edit Video Categories</h3>
+                <button type="button" class="modal-close-btn" id="closeEditCategoryModalBtn" aria-label="Close modal">
+                    <i class='bx bx-x'></i>
+                </button>
+            </div>
+            <p style="margin-bottom: 0.9rem; font-size: 0.95rem; color: var(--text-light);" id="editCategoryVideoTitle"></p>
+            <span class="static-label" style="margin-bottom: 0.5rem;">Select where this video should appear:</span>
+            <div class="category-chips-grid" id="editModalCategoryChips">
+                <button type="button" class="category-chip" data-value="Cinematic"><i class='bx bx-movie'></i> Cinematic</button>
+                <button type="button" class="category-chip" data-value="Commercial"><i class='bx bx-briefcase-alt-2'></i> Commercial</button>
+                <button type="button" class="category-chip" data-value="Reels/Shorts"><i class='bx bx-mobile-vibration'></i> Reels & Shorts</button>
+                <button type="button" class="category-chip" data-value="Motion Graphics"><i class='bx bx-shape-polygon'></i> Motion Graphics</button>
+                <button type="button" class="category-chip" data-value="Music Video"><i class='bx bx-music'></i> Music Video</button>
+            </div>
+            <div class="form-actions" style="margin-top: 1.5rem;">
+                <button type="button" class="btn btn-secondary" id="cancelEditCategoryBtn">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveCategoryChangesBtn">
+                    <i class='bx bx-check'></i> Save Categories
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Creator / Admin Login Modal -->
+    <div class="modal-overlay" id="adminLoginModal" aria-hidden="true" role="dialog">
+        <div class="modal-container glass-card" style="max-width: 420px; text-align: center;">
+            <div class="modal-header" style="justify-content: center; position: relative;">
+                <h3><i class='bx bx-shield-quarter accent'></i> Creator Access</h3>
+                <button type="button" class="modal-close-btn" id="closeAdminLoginModalBtn" aria-label="Close modal" style="position: absolute; right: 0;">
+                    <i class='bx bx-x'></i>
+                </button>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--text-main); margin-bottom: 1.2rem;">
+                Enter your admin passcode to unlock video uploads, editing, and deletion.
+            </p>
+            <form id="adminLoginForm">
+                <div class="input-group" style="margin-bottom: 1.2rem;">
+                    <input type="password" id="adminPasswordInput" required placeholder=" " autocomplete="current-password" />
+                    <label for="adminPasswordInput">Admin Passcode</label>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class='bx bx-lock-open-alt'></i> Unlock Controls
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toastContainer" aria-live="polite"></div>
 
     <script src="portfolio.js"></script>
 </body>
