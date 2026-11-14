@@ -1574,3 +1574,214 @@ body.is-admin .card-action-btns {
         bottom: 1.5rem;
     }
 }
+
+/* --- FULL CMS & ADMIN MANAGEMENT STYLES --- */
+.hero-subtitle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.skill-card,
+.project-card {
+    position: relative;
+}
+
+.card-admin-actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: none;
+    gap: 0.4rem;
+    z-index: 10;
+}
+
+body.is-admin .card-admin-actions {
+    display: inline-flex;
+}
+
+.btn-card-action {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--glass-border);
+    background: rgba(11, 12, 16, 0.9);
+    color: var(--text-light);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.btn-card-action:hover {
+    transform: scale(1.1);
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 10px rgba(102, 252, 241, 0.4);
+}
+
+.btn-card-action.danger:hover {
+    color: #ff3366;
+    border-color: #ff3366;
+    box-shadow: 0 0 10px rgba(255, 51, 102, 0.4);
+}
+
+/* Icon presets in skill modal */
+.icon-presets-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-bottom: 1rem;
+}
+
+.icon-preset-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--glass-border);
+    color: var(--text-light);
+    font-size: 1.3rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.icon-preset-btn:hover,
+.icon-preset-btn.active {
+    background: rgba(102, 252, 241, 0.15);
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+.color-picker-input {
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-left: 0.5rem;
+}
+
+/* Floating Admin Dock */
+.admin-floating-dock {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(17, 22, 30, 0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--accent-color);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(102, 252, 241, 0.25);
+    border-radius: 40px;
+    padding: 0.5rem 1rem;
+    z-index: 2500;
+    display: none;
+    align-items: center;
+    gap: 0.8rem;
+    max-width: 95vw;
+    animation: dockSlideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+body.is-admin .admin-floating-dock {
+    display: flex !important;
+}
+
+@keyframes dockSlideUp {
+    from {
+        transform: translate(-50%, 50px);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+}
+
+.dock-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    padding-right: 0.6rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.12);
+    white-space: nowrap;
+}
+
+.dock-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    overflow-x: auto;
+}
+
+.dock-btn {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--glass-border);
+    color: var(--text-light);
+    padding: 0.45rem 0.85rem;
+    border-radius: 20px;
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    white-space: nowrap;
+    transition: var(--transition);
+}
+
+.dock-btn:hover {
+    background: var(--accent-color);
+    color: var(--bg-color);
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 252, 241, 0.35);
+}
+
+.dock-btn-danger {
+    background: rgba(255, 51, 102, 0.15);
+    border-color: rgba(255, 51, 102, 0.3);
+    color: #ff5c77;
+}
+
+.dock-btn-danger:hover {
+    background: #ff3366;
+    color: #ffffff;
+    border-color: #ff3366;
+    box-shadow: 0 4px 12px rgba(255, 51, 102, 0.4);
+}
+
+@media (max-width: 768px) {
+    .admin-floating-dock {
+        bottom: 12px;
+        padding: 0.4rem 0.6rem;
+        border-radius: 20px;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    .dock-badge {
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-right: 0;
+        padding-bottom: 0.2rem;
+    }
+
+    .dock-actions {
+        width: 100%;
+        justify-content: flex-start;
+        padding-bottom: 4px;
+    }
+}

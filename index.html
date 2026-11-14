@@ -43,27 +43,32 @@
         <section id="home" class="hero section">
             <div class="container hero-container grid">
                 <div class="hero-text reveal">
-                    <span class="subtitle">Welcome to my portfolio</span>
-                    <h1 class="title">Hi, I'm <span class="accent">Yoseph Tilahun</span></h1>
-                    <h2 class="role typing-text">Web Developer & Video Editor</h2>
-                    <p class="description">
+                    <div class="hero-subtitle-row">
+                        <span class="subtitle">Welcome to my portfolio</span>
+                        <button class="btn btn-sm btn-secondary admin-only" id="heroEditProfileBtn" title="Edit Profile Details">
+                            <i class='bx bx-edit'></i> Edit Profile
+                        </button>
+                    </div>
+                    <h1 class="title">Hi, I'm <span class="accent" id="heroName">Yoseph Tilahun</span></h1>
+                    <h2 class="role typing-text" id="heroRole">Web Developer & Video Editor</h2>
+                    <p class="description" id="heroDesc">
                         I craft high-performing web applications and produce engaging, high-quality video content that delivers exceptional visual experiences.
                     </p>
                     <div class="hero-btns">
                         <a href="#projects" class="btn btn-primary">View My Work</a>
-                        <a href="Cv5.pdf" class="btn btn-secondary">Download CV</a>
+                        <a href="Cv5.pdf" class="btn btn-secondary" id="heroCvBtn" download>Download CV</a>
                     </div>
-                    <div class="social-links">
-                        <a href="https://www.linkedin.com/feed/" target="_blank"><i class='bx bxl-linkedin'></i></a>
-                        <a href="https://t.me/yosibdu" target="_blank"><i class='bx bxl-telegram'></i></a>
-                        <a href="https://www.instagram.com/yoseph3856/" target="_blank"><i class='bx bxl-instagram'></i></a>
-                        <a href="https://wa.me/251905217674" target="_blank"><i class='bx bxl-whatsapp'></i></a>
+                    <div class="social-links" id="heroSocials">
+                        <a href="https://www.linkedin.com/feed/" target="_blank" id="socialLinkedin"><i class='bx bxl-linkedin'></i></a>
+                        <a href="https://t.me/yosibdu" target="_blank" id="socialTelegram"><i class='bx bxl-telegram'></i></a>
+                        <a href="https://www.instagram.com/yoseph3856/" target="_blank" id="socialInstagram"><i class='bx bxl-instagram'></i></a>
+                        <a href="https://wa.me/251905217674" target="_blank" id="socialWhatsapp"><i class='bx bxl-whatsapp'></i></a>
                     </div>
                 </div>
 
                 <div class="hero-image reveal">
-                    <div class="image-wrapper">
-                        <img src="image/yose.JPG" alt="Yoseph Tilahun">
+                    <div class="image-wrapper" id="heroImageWrapper">
+                        <img src="image/yose.JPG" alt="Yoseph Tilahun" id="heroImg">
                         <div class="glow-effect"></div>
                     </div>
                 </div>
@@ -79,17 +84,20 @@
                 <div class="section-title reveal">
                     <h2>About <span class="accent">Me</span></h2>
                     <p>Get to know my background and expertise.</p>
+                    <button class="btn btn-sm btn-secondary admin-only" id="aboutEditBtn" style="margin-top: 0.8rem;">
+                        <i class='bx bx-edit'></i> Edit About Details
+                    </button>
                 </div>
                 <div class="about-content grid reveal">
                     <div class="about-text glass-card">
                         <i class='bx bx-code-alt about-icon'></i>
                         <h3>Who I Am</h3>
-                        <p>
+                        <p id="aboutP1">
                             I am a Computer Science graduate and a passionate full-stack developer with experience in building
                             modern, responsive, and user-friendly web applications. I enjoy turning complex problems into
                             simple and effective solutions.
                         </p>
-                        <p>
+                        <p id="aboutP2">
                             During my internship, I participated in web application development and gained practical experience working in a professional environment. I have developed projects such as a School Student Management System using Laravel and MySQL. I am continuously learning new technologies and striving to improve my skills in web development, mobile app development, graphic design, and video editing.
                         </p>
                     </div>
@@ -102,9 +110,12 @@
             <div class="container">
                 <div class="section-title reveal">
                     <h2>My <span class="accent">Skills</span></h2>
-                    <p>Technologies and tools I work with.</p>
+                    <p>Technologies and creative tools I work with.</p>
+                    <button class="btn btn-sm btn-primary admin-only" id="openAddSkillBtn" style="margin-top: 0.8rem;">
+                        <i class='bx bx-plus-circle'></i> Add New Skill
+                    </button>
                 </div>
-                <div class="skills-grid grid reveal">
+                <div class="skills-grid grid reveal" id="skillsGrid">
                     <div class="skill-card glass-card">
                         <i class='bx bxl-html5 skill-icon html'></i>
                         <h3>HTML5</h3>
@@ -143,8 +154,11 @@
                 <div class="section-title reveal">
                     <h2>Featured <span class="accent">Projects</span></h2>
                     <p>A selection of my recent work.</p>
+                    <button class="btn btn-sm btn-primary admin-only" id="openAddProjectBtn" style="margin-top: 0.8rem;">
+                        <i class='bx bx-plus-circle'></i> Add New Project
+                    </button>
                 </div>
-                <div class="projects-grid grid">
+                <div class="projects-grid grid reveal" id="projectsGrid">
                     
                     <!-- Project 1 -->
                     <div class="project-card glass-card reveal">
@@ -255,7 +269,7 @@
                             <i class='bx bx-envelope'></i>
                             <div>
                                 <h4>Email</h4>
-                                <a href="mailto:yositilahun21@gmail.com">yositilahun21@gmail.com</a>
+                                <a href="mailto:yositilahun21@gmail.com" id="contactEmail">yositilahun21@gmail.com</a>
                             </div>
                         </div>
                         
@@ -263,7 +277,7 @@
                             <i class='bx bxl-whatsapp'></i>
                             <div>
                                 <h4>WhatsApp</h4>
-                                <a href="https://wa.me/251905217674" target="_blank">+251 905 217 674</a>
+                                <a href="https://wa.me/251905217674" target="_blank" id="contactPhone">+251 905 217 674</a>
                             </div>
                         </div>
 
@@ -271,7 +285,7 @@
                             <i class='bx bx-map'></i>
                             <div>
                                 <h4>Location</h4>
-                                <span>Ethiopia</span>
+                                <span id="contactLocation">Ethiopia</span>
                             </div>
                         </div>
                     </div>
@@ -485,6 +499,238 @@
                     <i class='bx bx-lock-open-alt'></i> Unlock Controls
                 </button>
             </form>
+        </div>
+    </div>
+
+    <!-- 1. Edit Profile Modal -->
+    <div class="modal-overlay" id="profileEditModal" aria-hidden="true" role="dialog">
+        <div class="modal-container glass-card" style="max-width: 650px;">
+            <div class="modal-header">
+                <h3><i class='bx bx-user-circle accent'></i> Edit Profile & Bio</h3>
+                <button type="button" class="modal-close-btn" id="closeProfileEditModalBtn" aria-label="Close modal"><i class='bx bx-x'></i></button>
+            </div>
+            <form id="profileEditForm" class="admin-modal-form">
+                <div class="form-row">
+                    <div class="input-group">
+                        <input type="text" id="profNameInput" required placeholder=" " />
+                        <label for="profNameInput">Full Name</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="profRoleInput" required placeholder=" " />
+                        <label for="profRoleInput">Title / Role Headline</label>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <textarea id="profHeroDescInput" rows="2" placeholder=" "></textarea>
+                    <label for="profHeroDescInput">Hero Short Description</label>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <input type="text" id="profImgInput" placeholder=" " />
+                        <label for="profImgInput">Profile Photo URL/Path (e.g. image/yose.JPG)</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="profCvInput" placeholder=" " />
+                        <label for="profCvInput">CV File Link (e.g. Cv5.pdf)</label>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <textarea id="profAboutP1Input" rows="3" placeholder=" "></textarea>
+                    <label for="profAboutP1Input">About Me - Paragraph 1 (Who I Am)</label>
+                </div>
+
+                <div class="input-group">
+                    <textarea id="profAboutP2Input" rows="3" placeholder=" "></textarea>
+                    <label for="profAboutP2Input">About Me - Paragraph 2 (Experience & Skills)</label>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <input type="email" id="profEmailInput" placeholder=" " />
+                        <label for="profEmailInput">Email Address</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="profPhoneInput" placeholder=" " />
+                        <label for="profPhoneInput">WhatsApp / Phone</label>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <input type="text" id="profLocationInput" placeholder=" " />
+                        <label for="profLocationInput">Location</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="url" id="profLinkedinInput" placeholder=" " />
+                        <label for="profLinkedinInput">LinkedIn Profile URL</label>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <input type="url" id="profTelegramInput" placeholder=" " />
+                        <label for="profTelegramInput">Telegram Link (e.g. https://t.me/...)</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="url" id="profInstagramInput" placeholder=" " />
+                        <label for="profInstagramInput">Instagram Link</label>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelProfileEditBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary"><i class='bx bx-check'></i> Save Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 2. Add / Edit Skill Modal -->
+    <div class="modal-overlay" id="skillModal" aria-hidden="true" role="dialog">
+        <div class="modal-container glass-card" style="max-width: 480px;">
+            <div class="modal-header">
+                <h3 id="skillModalHeading"><i class='bx bx-code-alt accent'></i> Add New Skill</h3>
+                <button type="button" class="modal-close-btn" id="closeSkillModalBtn" aria-label="Close modal"><i class='bx bx-x'></i></button>
+            </div>
+            <form id="skillForm">
+                <input type="hidden" id="skillEditId" value="" />
+                
+                <div class="input-group" style="margin-bottom: 1.2rem;">
+                    <input type="text" id="skillNameInput" required placeholder=" " />
+                    <label for="skillNameInput">Skill Name (e.g. Python, Docker, Figma)</label>
+                </div>
+
+                <div class="input-group" style="margin-bottom: 0.8rem;">
+                    <input type="text" id="skillIconInput" required placeholder=" " value="bx bx-code-alt" />
+                    <label for="skillIconInput">Boxicon Class (e.g. bx bxl-python)</label>
+                </div>
+
+                <!-- Quick Icon Selector -->
+                <span class="static-label" style="margin-bottom: 0.4rem;">Or Pick an Icon:</span>
+                <div class="icon-presets-row" id="skillIconPresets">
+                    <button type="button" class="icon-preset-btn" data-icon="bx bxl-python" title="Python"><i class='bx bxl-python'></i></button>
+                    <button type="button" class="icon-preset-btn" data-icon="bx bxl-nodejs" title="Node.js"><i class='bx bxl-nodejs'></i></button>
+                    <button type="button" class="icon-preset-btn" data-icon="bx bxl-typescript" title="TypeScript"><i class='bx bxl-typescript'></i></button>
+                    <button type="button" class="icon-preset-btn" data-icon="bx bxl-vuejs" title="Vue.js"><i class='bx bxl-vuejs'></i></button>
+                    <button type="button" class="icon-preset-btn" data-icon="bx bxl-tailwind-css" title="Tailwind"><i class='bx bxl-tailwind-css'></i></button>
+                    <button type="button" class="icon-preset-btn" data-icon="bx bxl-figma" title="Figma"><i class='bx bxl-figma'></i></button>
+                    <button type="button" class="icon-preset-btn" data-icon="bx bxl-git" title="Git"><i class='bx bxl-git'></i></button>
+                    <button type="button" class="icon-preset-btn" data-icon="bx bxl-docker" title="Docker"><i class='bx bxl-docker'></i></button>
+                    <button type="button" class="icon-preset-btn" data-icon="bx bxs-paint" title="Graphic Design"><i class='bx bxs-paint'></i></button>
+                    <button type="button" class="icon-preset-btn" data-icon="bx bxs-video" title="Video Editing"><i class='bx bxs-video'></i></button>
+                </div>
+
+                <div class="form-row" style="margin-top: 1.2rem; align-items: center;">
+                    <div class="input-group" style="flex: 2;">
+                        <input type="text" id="skillColorInput" placeholder=" " value="#66fcf1" />
+                        <label for="skillColorInput">Accent Color Hex (e.g. #66fcf1)</label>
+                    </div>
+                    <input type="color" id="skillColorPicker" value="#66fcf1" class="color-picker-input" title="Choose color" />
+                </div>
+
+                <div class="form-actions" style="margin-top: 1.5rem;">
+                    <button type="button" class="btn btn-secondary" id="cancelSkillModalBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="saveSkillSubmitBtn"><i class='bx bx-check'></i> Save Skill</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 3. Add / Edit Project Modal -->
+    <div class="modal-overlay" id="projectModal" aria-hidden="true" role="dialog">
+        <div class="modal-container glass-card" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 id="projectModalHeading"><i class='bx bx-folder-plus accent'></i> Add New Project</h3>
+                <button type="button" class="modal-close-btn" id="closeProjectModalBtn" aria-label="Close modal"><i class='bx bx-x'></i></button>
+            </div>
+            <form id="projectForm">
+                <input type="hidden" id="projectEditId" value="" />
+                
+                <div class="input-group">
+                    <input type="text" id="projectTitleInput" required placeholder=" " />
+                    <label for="projectTitleInput">Project Title</label>
+                </div>
+
+                <div class="input-group">
+                    <textarea id="projectDescInput" rows="3" required placeholder=" "></textarea>
+                    <label for="projectDescInput">Project Description</label>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group" style="flex: 2;">
+                        <input type="text" id="projectImgInput" placeholder=" " />
+                        <label for="projectImgInput">Cover Image URL or Path</label>
+                    </div>
+                    <div style="flex: 1; display: flex; align-items: center;">
+                        <label class="btn btn-secondary btn-sm" style="width: 100%; cursor: pointer;">
+                            <i class='bx bx-upload'></i> Browse
+                            <input type="file" id="projectImgFileInput" accept="image/*" hidden />
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <input type="url" id="projectDemoInput" placeholder=" " />
+                        <label for="projectDemoInput">Live Demo URL (Optional)</label>
+                    </div>
+                    <div class="input-group">
+                        <input type="url" id="projectSourceInput" placeholder=" " />
+                        <label for="projectSourceInput">GitHub / Source Code URL (Optional)</label>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelProjectModalBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="saveProjectSubmitBtn"><i class='bx bx-check'></i> Save Project</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 4. Change Passcode Modal -->
+    <div class="modal-overlay" id="passcodeModal" aria-hidden="true" role="dialog">
+        <div class="modal-container glass-card" style="max-width: 440px;">
+            <div class="modal-header">
+                <h3><i class='bx bx-key accent'></i> Change Admin Passcode</h3>
+                <button type="button" class="modal-close-btn" id="closePasscodeModalBtn" aria-label="Close modal"><i class='bx bx-x'></i></button>
+            </div>
+            <form id="changePasscodeForm">
+                <div class="input-group" style="margin-bottom: 1.2rem;">
+                    <input type="password" id="currentPasscodeInput" required placeholder=" " autocomplete="current-password" />
+                    <label for="currentPasscodeInput">Current Admin Passcode</label>
+                </div>
+                <div class="input-group" style="margin-bottom: 1.2rem;">
+                    <input type="password" id="newPasscodeInput" required placeholder=" " minlength="4" autocomplete="new-password" />
+                    <label for="newPasscodeInput">New Passcode (at least 4 chars)</label>
+                </div>
+                <div class="input-group" style="margin-bottom: 1.5rem;">
+                    <input type="password" id="confirmPasscodeInput" required placeholder=" " minlength="4" autocomplete="new-password" />
+                    <label for="confirmPasscodeInput">Confirm New Passcode</label>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelPasscodeModalBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary"><i class='bx bx-check'></i> Update Passcode</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 5. Floating Admin Control Dock -->
+    <div class="admin-floating-dock admin-only" id="adminFloatingDock">
+        <div class="dock-badge">
+            <i class='bx bx-shield-quarter'></i> <span>Admin Active</span>
+        </div>
+        <div class="dock-actions">
+            <button class="dock-btn" id="dockEditProfileBtn" title="Edit Profile & Info"><i class='bx bx-user'></i> Profile</button>
+            <button class="dock-btn" id="dockAddSkillBtn" title="Add Skill"><i class='bx bx-code-alt'></i> +Skill</button>
+            <button class="dock-btn" id="dockAddProjectBtn" title="Add Project"><i class='bx bx-folder-plus'></i> +Project</button>
+            <button class="dock-btn" id="dockUploadVideoBtn" title="Upload Video"><i class='bx bx-video-plus'></i> +Video</button>
+            <button class="dock-btn" id="dockChangePasscodeBtn" title="Change Admin Passcode"><i class='bx bx-key'></i> Passcode</button>
+            <button class="dock-btn dock-btn-danger" id="dockLogoutBtn" title="Exit Admin Mode"><i class='bx bx-log-out'></i> Exit</button>
         </div>
     </div>
 

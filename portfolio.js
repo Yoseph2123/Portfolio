@@ -117,11 +117,14 @@ function showToast(message, type = 'success') {
 // ==========================================
 // --- ADMIN / OWNER SECURITY SYSTEM ---
 // ==========================================
-// Default admin passcode - change this anytime!
 const DEFAULT_ADMIN_PASSCODE = 'yoseph2026';
 
 function getStoredPasscode() {
     return localStorage.getItem('portfolio_admin_passcode') || DEFAULT_ADMIN_PASSCODE;
+}
+
+function setStoredPasscode(newPasscode) {
+    localStorage.setItem('portfolio_admin_passcode', newPasscode);
 }
 
 function isAdminLoggedIn() {
@@ -136,7 +139,7 @@ function authenticateAdmin(enteredPasscode) {
         localStorage.setItem('portfolio_admin_persistent', 'true');
         sessionStorage.setItem('portfolio_active_passcode', enteredPasscode);
         applyAdminState(true);
-        showToast('Admin Mode Unlocked! You can now upload and manage videos.');
+        showToast('Admin Mode Unlocked! Full editing controls are active.');
         return true;
     }
     return false;
@@ -170,7 +173,7 @@ function applyAdminState(isAdmin) {
         const authBadge = document.getElementById('adminAuthBadge');
         if (authBadge) {
             authBadge.outerHTML = `
-                <button class="admin-auth-toggle-btn" id="adminAuthBtn" title="Owner Admin Access" aria-label="Admin Access">
+                <button class="admin-auth-toggle-btn" id="adminAuthBtn" title="Creator Admin Access" aria-label="Admin Access">
                     <i class='bx bx-lock-alt'></i>
                 </button>
             `;
@@ -179,6 +182,9 @@ function applyAdminState(isAdmin) {
         }
     }
 
+    // Refresh components to toggle edit/delete buttons
+    renderSkills();
+    renderProjects();
     renderVideos();
 }
 
@@ -194,7 +200,6 @@ function checkUrlForAdminKey() {
         } else if (isAdminLoggedIn()) {
             applyAdminState(true);
         } else {
-            // Open modal to prompt for passcode
             openAdminLoginModal();
         }
     } else if (isAdminLoggedIn()) {
@@ -238,12 +243,24 @@ function setupAdminLoginModal() {
         });
     }
 
-    // Secret double-click on footer logo also opens admin modal
     const footerLogo = document.querySelector('.footer-logo');
     if (footerLogo) {
         footerLogo.style.cursor = 'pointer';
         footerLogo.addEventListener('dblclick', openAdminLoginModal);
     }
+
+    // Secret creator keyboard shortcut: Ctrl+Shift+A or Alt+A
+    window.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) ||
+            (e.altKey && (e.key === 'A' || e.key === 'a'))) {
+            e.preventDefault();
+            if (isAdminLoggedIn()) {
+                showToast('Admin Mode is active! Use the bottom dock to manage portfolio.');
+            } else {
+                openAdminLoginModal();
+            }
+        }
+    });
 
     if (form) {
         form.addEventListener('submit', (e) => {
@@ -261,6 +278,728 @@ function setupAdminLoginModal() {
             }
         });
     }
+}
+
+// ==========================================
+// --- 1. PROFILE MANAGEMENT (CRUD) ---
+// ==========================================
+const DEFAULT_PROFILE = {
+    name: "Yoseph Tilahun",
+    role: "Web Developer & Video Editor",
+    heroDesc: "I craft high-performing web applications and produce engaging, high-quality video content that delivers exceptional visual experiences.",
+    profileImg: "image/yose.JPG",
+    cvFile: "Cv5.pdf",
+    aboutP1: "I am a Computer Science graduate and a passionate full-stack developer with experience in building modern, responsive, and user-friendly web applications. I enjoy turning complex problems into simple and effective solutions.",
+    aboutP2: "During my internship, I participated in web application development and gained practical experience working in a professional environment. I have developed projects such as a School Student Management System using Laravel and MySQL. I am continuously learning new technologies and striving to improve my skills in web development, mobile app development, graphic design, and video editing.",
+    email: "yositilahun21@gmail.com",
+    phone: "+251 905 217 674",
+    location: "Ethiopia",
+    linkedin: "https://www.linkedin.com/feed/",
+    telegram: "https://t.me/yosibdu",
+    instagram: "https://www.instagram.com/yoseph3856/",
+    whatsapp: "https://wa.me/251905217674"
+};
+
+function getProfile() {
+    try {
+        const saved = localStorage.getItem('portfolio_profile_data');
+        return saved ? { ...DEFAULT_PROFILE, ...JSON.parse(saved) } : { ...DEFAULT_PROFILE };
+    } catch (e) {
+        return { ...DEFAULT_PROFILE };
+    }
+}
+
+function saveProfile(data) {
+    localStorage.setItem('portfolio_profile_data', JSON.stringify(data));
+    renderProfile();
+    showToast('Profile information updated successfully!');
+}
+
+function renderProfile() {
+    const prof = getProfile();
+
+    const heroName = document.getElementById('heroName');
+    if (heroName) heroName.textContent = prof.name;
+
+    const heroRole = document.getElementById('heroRole');
+    if (heroRole) heroRole.textContent = prof.role;
+
+    const heroDesc = document.getElementById('heroDesc');
+    if (heroDesc) heroDesc.textContent = prof.heroDesc;
+
+    const heroImg = document.getElementById('heroImg');
+    if (heroImg && prof.profileImg) heroImg.src = prof.profileImg;
+
+    const heroCvBtn = document.getElementById('heroCvBtn');
+    if (heroCvBtn && prof.cvFile) heroCvBtn.href = prof.cvFile;
+
+    const aboutP1 = document.getElementById('aboutP1');
+    if (aboutP1) aboutP1.textContent = prof.aboutP1;
+
+    const aboutP2 = document.getElementById('aboutP2');
+    if (aboutP2) aboutP2.textContent = prof.aboutP2;
+
+    const contactEmail = document.getElementById('contactEmail');
+    if (contactEmail) {
+        contactEmail.textContent = prof.email;
+        contactEmail.href = `mailto:${prof.email}`;
+    }
+
+    const contactPhone = document.getElementById('contactPhone');
+    if (contactPhone) {
+        contactPhone.textContent = prof.phone;
+        contactPhone.href = prof.whatsapp || `tel:${prof.phone}`;
+    }
+
+    const contactLocation = document.getElementById('contactLocation');
+    if (contactLocation) contactLocation.textContent = prof.location;
+
+    const socialLinkedin = document.getElementById('socialLinkedin');
+    if (socialLinkedin && prof.linkedin) socialLinkedin.href = prof.linkedin;
+
+    const socialTelegram = document.getElementById('socialTelegram');
+    if (socialTelegram && prof.telegram) socialTelegram.href = prof.telegram;
+
+    const socialInstagram = document.getElementById('socialInstagram');
+    if (socialInstagram && prof.instagram) socialInstagram.href = prof.instagram;
+
+    const socialWhatsapp = document.getElementById('socialWhatsapp');
+    if (socialWhatsapp && prof.whatsapp) socialWhatsapp.href = prof.whatsapp;
+}
+
+function openProfileEditModal() {
+    if (!isAdminLoggedIn()) {
+        openAdminLoginModal();
+        return;
+    }
+
+    const prof = getProfile();
+    const modal = document.getElementById('profileEditModal');
+    if (!modal) return;
+
+    document.getElementById('profNameInput').value = prof.name || '';
+    document.getElementById('profRoleInput').value = prof.role || '';
+    document.getElementById('profHeroDescInput').value = prof.heroDesc || '';
+    document.getElementById('profImgInput').value = prof.profileImg || '';
+    document.getElementById('profCvInput').value = prof.cvFile || '';
+    document.getElementById('profAboutP1Input').value = prof.aboutP1 || '';
+    document.getElementById('profAboutP2Input').value = prof.aboutP2 || '';
+    document.getElementById('profEmailInput').value = prof.email || '';
+    document.getElementById('profPhoneInput').value = prof.phone || '';
+    document.getElementById('profLocationInput').value = prof.location || '';
+    document.getElementById('profLinkedinInput').value = prof.linkedin || '';
+    document.getElementById('profTelegramInput').value = prof.telegram || '';
+    document.getElementById('profInstagramInput').value = prof.instagram || '';
+
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeProfileEditModal() {
+    const modal = document.getElementById('profileEditModal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+}
+
+function setupProfileManager() {
+    const modal = document.getElementById('profileEditModal');
+    const heroBtn = document.getElementById('heroEditProfileBtn');
+    const aboutBtn = document.getElementById('aboutEditBtn');
+    const closeBtn = document.getElementById('closeProfileEditModalBtn');
+    const cancelBtn = document.getElementById('cancelProfileEditBtn');
+    const form = document.getElementById('profileEditForm');
+
+    if (heroBtn) heroBtn.addEventListener('click', openProfileEditModal);
+    if (aboutBtn) aboutBtn.addEventListener('click', openProfileEditModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeProfileEditModal);
+    if (cancelBtn) cancelBtn.addEventListener('click', closeProfileEditModal);
+
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeProfileEditModal();
+        });
+    }
+
+    if (form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const updated = {
+                name: document.getElementById('profNameInput').value.trim(),
+                role: document.getElementById('profRoleInput').value.trim(),
+                heroDesc: document.getElementById('profHeroDescInput').value.trim(),
+                profileImg: document.getElementById('profImgInput').value.trim(),
+                cvFile: document.getElementById('profCvInput').value.trim(),
+                aboutP1: document.getElementById('profAboutP1Input').value.trim(),
+                aboutP2: document.getElementById('profAboutP2Input').value.trim(),
+                email: document.getElementById('profEmailInput').value.trim(),
+                phone: document.getElementById('profPhoneInput').value.trim(),
+                location: document.getElementById('profLocationInput').value.trim(),
+                linkedin: document.getElementById('profLinkedinInput').value.trim(),
+                telegram: document.getElementById('profTelegramInput').value.trim(),
+                instagram: document.getElementById('profInstagramInput').value.trim(),
+                whatsapp: `https://wa.me/${document.getElementById('profPhoneInput').value.replace(/[^0-9]/g, '')}`
+            };
+
+            saveProfile(updated);
+            closeProfileEditModal();
+        });
+    }
+
+    renderProfile();
+}
+
+// ==========================================
+// --- 2. SKILLS MANAGEMENT (CRUD) ---
+// ==========================================
+const DEFAULT_SKILLS = [
+    { id: 'skill-1', name: 'HTML5', icon: 'bx bxl-html5', color: '#e34f26' },
+    { id: 'skill-2', name: 'CSS3', icon: 'bx bxl-css3', color: '#1572b6' },
+    { id: 'skill-3', name: 'JavaScript', icon: 'bx bxl-javascript', color: '#f7df1e' },
+    { id: 'skill-4', name: 'React', icon: 'bx bxl-react', color: '#61dafb' },
+    { id: 'skill-5', name: 'PHP', icon: 'bx bxl-php', color: '#777bb4' },
+    { id: 'skill-6', name: 'Laravel & MySQL', icon: 'bx bx-data', color: '#f29111' },
+    { id: 'skill-7', name: 'Video Editing', icon: 'bx bxs-video-recording', color: '#ff3366' }
+];
+
+function getSkills() {
+    try {
+        const saved = localStorage.getItem('portfolio_skills_data');
+        return saved ? JSON.parse(saved) : [...DEFAULT_SKILLS];
+    } catch (e) {
+        return [...DEFAULT_SKILLS];
+    }
+}
+
+function saveSkillsList(list) {
+    localStorage.setItem('portfolio_skills_data', JSON.stringify(list));
+    renderSkills();
+}
+
+function renderSkills() {
+    const grid = document.getElementById('skillsGrid');
+    if (!grid) return;
+
+    const skills = getSkills();
+    const isAdmin = isAdminLoggedIn();
+
+    grid.innerHTML = skills.map(skill => {
+        const adminActions = isAdmin ? `
+            <div class="card-admin-actions">
+                <button class="btn-card-action edit-skill-btn" data-id="${skill.id}" title="Edit Skill"><i class='bx bx-edit-alt'></i></button>
+                <button class="btn-card-action danger delete-skill-btn" data-id="${skill.id}" title="Delete Skill"><i class='bx bx-trash'></i></button>
+            </div>
+        ` : '';
+
+        return `
+            <div class="skill-card glass-card reveal active" data-id="${skill.id}">
+                ${adminActions}
+                <i class='${escapeHtml(skill.icon)} skill-icon' style="color: ${escapeHtml(skill.color || '#66fcf1')};"></i>
+                <h3>${escapeHtml(skill.name)}</h3>
+            </div>
+        `;
+    }).join('');
+
+    // Attach event listeners
+    grid.querySelectorAll('.edit-skill-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openSkillModal(btn.getAttribute('data-id'));
+        });
+    });
+
+    grid.querySelectorAll('.delete-skill-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            deleteSkill(btn.getAttribute('data-id'));
+        });
+    });
+
+    revealOnScroll();
+}
+
+function openSkillModal(skillId = null) {
+    if (!isAdminLoggedIn()) {
+        openAdminLoginModal();
+        return;
+    }
+
+    const modal = document.getElementById('skillModal');
+    const heading = document.getElementById('skillModalHeading');
+    const idInput = document.getElementById('skillEditId');
+    const nameInput = document.getElementById('skillNameInput');
+    const iconInput = document.getElementById('skillIconInput');
+    const colorInput = document.getElementById('skillColorInput');
+    const colorPicker = document.getElementById('skillColorPicker');
+
+    if (!modal) return;
+
+    if (skillId) {
+        const skills = getSkills();
+        const skill = skills.find(s => s.id === skillId);
+        if (skill) {
+            heading.innerHTML = `<i class='bx bx-edit accent'></i> Edit Skill`;
+            idInput.value = skill.id;
+            nameInput.value = skill.name;
+            iconInput.value = skill.icon;
+            colorInput.value = skill.color || '#66fcf1';
+            colorPicker.value = skill.color || '#66fcf1';
+        }
+    } else {
+        heading.innerHTML = `<i class='bx bx-plus-circle accent'></i> Add New Skill`;
+        idInput.value = '';
+        nameInput.value = '';
+        iconInput.value = 'bx bx-code-alt';
+        colorInput.value = '#66fcf1';
+        colorPicker.value = '#66fcf1';
+    }
+
+    const presets = document.getElementById('skillIconPresets');
+    if (presets && iconInput) {
+        presets.querySelectorAll('.icon-preset-btn').forEach(b => {
+            b.classList.toggle('active', b.getAttribute('data-icon') === iconInput.value);
+        });
+    }
+
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeSkillModal() {
+    const modal = document.getElementById('skillModal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+}
+
+function deleteSkill(id) {
+    if (!confirm('Are you sure you want to delete this skill?')) return;
+    const skills = getSkills().filter(s => s.id !== id);
+    saveSkillsList(skills);
+    showToast('Skill removed successfully.');
+}
+
+function setupSkillsManager() {
+    const modal = document.getElementById('skillModal');
+    const openBtn = document.getElementById('openAddSkillBtn');
+    const closeBtn = document.getElementById('closeSkillModalBtn');
+    const cancelBtn = document.getElementById('cancelSkillModalBtn');
+    const form = document.getElementById('skillForm');
+    const colorInput = document.getElementById('skillColorInput');
+    const colorPicker = document.getElementById('skillColorPicker');
+    const presets = document.getElementById('skillIconPresets');
+
+    if (openBtn) openBtn.addEventListener('click', () => openSkillModal());
+    if (closeBtn) closeBtn.addEventListener('click', closeSkillModal);
+    if (cancelBtn) cancelBtn.addEventListener('click', closeSkillModal);
+
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeSkillModal();
+        });
+    }
+
+    if (colorPicker && colorInput) {
+        colorPicker.addEventListener('input', () => {
+            colorInput.value = colorPicker.value;
+        });
+        colorInput.addEventListener('input', () => {
+            if (/^#[0-9A-F]{6}$/i.test(colorInput.value)) {
+                colorPicker.value = colorInput.value;
+            }
+        });
+    }
+
+    if (presets) {
+        presets.addEventListener('click', (e) => {
+            const btn = e.target.closest('.icon-preset-btn');
+            if (!btn) return;
+            const iconVal = btn.getAttribute('data-icon');
+            document.getElementById('skillIconInput').value = iconVal;
+            presets.querySelectorAll('.icon-preset-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        });
+    }
+
+    if (form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = document.getElementById('skillEditId').value;
+            const name = document.getElementById('skillNameInput').value.trim();
+            const icon = document.getElementById('skillIconInput').value.trim();
+            const color = document.getElementById('skillColorInput').value.trim();
+
+            if (!name) return;
+
+            let skills = getSkills();
+            if (id) {
+                // Update
+                skills = skills.map(s => s.id === id ? { ...s, name, icon, color } : s);
+                showToast(`Skill "${name}" updated!`);
+            } else {
+                // Add new
+                const newSkill = {
+                    id: 'skill-' + Date.now(),
+                    name,
+                    icon: icon || 'bx bx-code-alt',
+                    color: color || '#66fcf1'
+                };
+                skills.push(newSkill);
+                showToast(`Skill "${name}" added!`);
+            }
+
+            saveSkillsList(skills);
+            closeSkillModal();
+        });
+    }
+
+    renderSkills();
+}
+
+// ==========================================
+// --- 3. PROJECTS MANAGEMENT (CRUD) ---
+// ==========================================
+const DEFAULT_PROJECTS = [
+    {
+        id: 'proj-1',
+        title: 'Personal Expense Tracker',
+        description: 'A web app to manage daily income and expenses efficiently. Monitor spending habits with beautiful charts.',
+        image: 'image/expense_tracker_mockup_1782330623655.png',
+        demoUrl: '#',
+        sourceUrl: '#'
+    },
+    {
+        id: 'proj-2',
+        title: 'Farmers Connect',
+        description: 'A platform connecting local farmers directly with buyers to foster local economy and fresh produce trade.',
+        image: 'image/farmers_connect_mockup_1782330639150.png',
+        demoUrl: '#',
+        sourceUrl: '#'
+    },
+    {
+        id: 'proj-3',
+        title: 'Student Management System',
+        description: 'Modern student information and management system built with Laravel and MySQL.',
+        image: 'image/student_management_mockup_1782330650558.png',
+        demoUrl: 'https://yoseph.42web.io/highschool/?i=1',
+        sourceUrl: '#'
+    },
+    {
+        id: 'proj-4',
+        title: 'Home Service Finder',
+        description: 'A robust home-based service finding solution to connect customers with professional service providers.',
+        image: 'image/home_service_mockup_1782330663756.png',
+        demoUrl: '#',
+        sourceUrl: 'https://github.com/Yoseph2123/Final-project.git'
+    }
+];
+
+function getProjects() {
+    try {
+        const saved = localStorage.getItem('portfolio_projects_data');
+        return saved ? JSON.parse(saved) : [...DEFAULT_PROJECTS];
+    } catch (e) {
+        return [...DEFAULT_PROJECTS];
+    }
+}
+
+function saveProjectsList(list) {
+    localStorage.setItem('portfolio_projects_data', JSON.stringify(list));
+    renderProjects();
+}
+
+function renderProjects() {
+    const grid = document.getElementById('projectsGrid');
+    if (!grid) return;
+
+    const projects = getProjects();
+    const isAdmin = isAdminLoggedIn();
+
+    grid.innerHTML = projects.map(proj => {
+        const adminActions = isAdmin ? `
+            <div class="card-admin-actions">
+                <button class="btn-card-action edit-project-btn" data-id="${proj.id}" title="Edit Project"><i class='bx bx-edit-alt'></i></button>
+                <button class="btn-card-action danger delete-project-btn" data-id="${proj.id}" title="Delete Project"><i class='bx bx-trash'></i></button>
+            </div>
+        ` : '';
+
+        const demoBtn = proj.demoUrl && proj.demoUrl !== '#' ? `
+            <a href="${escapeHtml(proj.demoUrl)}" target="_blank" class="btn btn-sm"><i class='bx bx-link-external'></i> Live Demo</a>
+        ` : '';
+
+        const sourceBtn = proj.sourceUrl && proj.sourceUrl !== '#' ? `
+            <a href="${escapeHtml(proj.sourceUrl)}" target="_blank" class="btn btn-sm"><i class='bx bxl-github'></i> Source Code</a>
+        ` : '';
+
+        const fallbackDetailsBtn = (!demoBtn && !sourceBtn) ? `
+            <a href="#" class="btn btn-sm">View Details</a>
+        ` : '';
+
+        return `
+            <div class="project-card glass-card reveal active" data-id="${proj.id}">
+                ${adminActions}
+                <div class="project-img">
+                    <img src="${escapeHtml(proj.image || 'image/expense_tracker_mockup_1782330623655.png')}" alt="${escapeHtml(proj.title)}">
+                </div>
+                <div class="project-info">
+                    <h3>${escapeHtml(proj.title)}</h3>
+                    <p>${escapeHtml(proj.description)}</p>
+                    <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+                        ${demoBtn}
+                        ${sourceBtn}
+                        ${fallbackDetailsBtn}
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    grid.querySelectorAll('.edit-project-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openProjectModal(btn.getAttribute('data-id'));
+        });
+    });
+
+    grid.querySelectorAll('.delete-project-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            deleteProject(btn.getAttribute('data-id'));
+        });
+    });
+
+    revealOnScroll();
+}
+
+function openProjectModal(projId = null) {
+    if (!isAdminLoggedIn()) {
+        openAdminLoginModal();
+        return;
+    }
+
+    const modal = document.getElementById('projectModal');
+    const heading = document.getElementById('projectModalHeading');
+    const idInput = document.getElementById('projectEditId');
+    const titleInput = document.getElementById('projectTitleInput');
+    const descInput = document.getElementById('projectDescInput');
+    const imgInput = document.getElementById('projectImgInput');
+    const demoInput = document.getElementById('projectDemoInput');
+    const sourceInput = document.getElementById('projectSourceInput');
+
+    if (!modal) return;
+
+    if (projId) {
+        const projects = getProjects();
+        const p = projects.find(item => item.id === projId);
+        if (p) {
+            heading.innerHTML = `<i class='bx bx-edit accent'></i> Edit Project`;
+            idInput.value = p.id;
+            titleInput.value = p.title;
+            descInput.value = p.description;
+            imgInput.value = p.image || '';
+            demoInput.value = p.demoUrl !== '#' ? p.demoUrl : '';
+            sourceInput.value = p.sourceUrl !== '#' ? p.sourceUrl : '';
+        }
+    } else {
+        heading.innerHTML = `<i class='bx bx-folder-plus accent'></i> Add New Project`;
+        idInput.value = '';
+        titleInput.value = '';
+        descInput.value = '';
+        imgInput.value = '';
+        demoInput.value = '';
+        sourceInput.value = '';
+    }
+
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeProjectModal() {
+    const modal = document.getElementById('projectModal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+}
+
+function deleteProject(id) {
+    if (!confirm('Are you sure you want to delete this project?')) return;
+    const projects = getProjects().filter(p => p.id !== id);
+    saveProjectsList(projects);
+    showToast('Project removed successfully.');
+}
+
+function setupProjectsManager() {
+    const modal = document.getElementById('projectModal');
+    const openBtn = document.getElementById('openAddProjectBtn');
+    const closeBtn = document.getElementById('closeProjectModalBtn');
+    const cancelBtn = document.getElementById('cancelProjectModalBtn');
+    const form = document.getElementById('projectForm');
+    const fileInput = document.getElementById('projectImgFileInput');
+
+    if (openBtn) openBtn.addEventListener('click', () => openProjectModal());
+    if (closeBtn) closeBtn.addEventListener('click', closeProjectModal);
+    if (cancelBtn) cancelBtn.addEventListener('click', closeProjectModal);
+
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeProjectModal();
+        });
+    }
+
+    if (fileInput) {
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    document.getElementById('projectImgInput').value = event.target.result;
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+        });
+    }
+
+    if (form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = document.getElementById('projectEditId').value;
+            const title = document.getElementById('projectTitleInput').value.trim();
+            const description = document.getElementById('projectDescInput').value.trim();
+            const image = document.getElementById('projectImgInput').value.trim();
+            const demoUrl = document.getElementById('projectDemoInput').value.trim();
+            const sourceUrl = document.getElementById('projectSourceInput').value.trim();
+
+            if (!title) return;
+
+            let projects = getProjects();
+            if (id) {
+                projects = projects.map(p => p.id === id ? {
+                    ...p,
+                    title,
+                    description,
+                    image: image || p.image,
+                    demoUrl: demoUrl || '#',
+                    sourceUrl: sourceUrl || '#'
+                } : p);
+                showToast(`Project "${title}" updated!`);
+            } else {
+                const newProject = {
+                    id: 'proj-' + Date.now(),
+                    title,
+                    description,
+                    image: image || 'image/expense_tracker_mockup_1782330623655.png',
+                    demoUrl: demoUrl || '#',
+                    sourceUrl: sourceUrl || '#'
+                };
+                projects.unshift(newProject);
+                showToast(`Project "${title}" added!`);
+            }
+
+            saveProjectsList(projects);
+            closeProjectModal();
+        });
+    }
+
+    renderProjects();
+}
+
+// ==========================================
+// --- 4. PASSCODE MANAGEMENT ---
+// ==========================================
+function openPasscodeModal() {
+    if (!isAdminLoggedIn()) {
+        openAdminLoginModal();
+        return;
+    }
+
+    const modal = document.getElementById('passcodeModal');
+    if (!modal) return;
+    document.getElementById('currentPasscodeInput').value = '';
+    document.getElementById('newPasscodeInput').value = '';
+    document.getElementById('confirmPasscodeInput').value = '';
+
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+}
+
+function closePasscodeModal() {
+    const modal = document.getElementById('passcodeModal');
+    if (!modal) return;
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+}
+
+function setupPasscodeManager() {
+    const modal = document.getElementById('passcodeModal');
+    const closeBtn = document.getElementById('closePasscodeModalBtn');
+    const cancelBtn = document.getElementById('cancelPasscodeModalBtn');
+    const form = document.getElementById('changePasscodeForm');
+
+    if (closeBtn) closeBtn.addEventListener('click', closePasscodeModal);
+    if (cancelBtn) cancelBtn.addEventListener('click', closePasscodeModal);
+
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closePasscodeModal();
+        });
+    }
+
+    if (form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const currentEntered = document.getElementById('currentPasscodeInput').value;
+            const newPass = document.getElementById('newPasscodeInput').value;
+            const confirmPass = document.getElementById('confirmPasscodeInput').value;
+
+            if (currentEntered !== getStoredPasscode()) {
+                showToast('Current admin passcode is incorrect.', 'error');
+                return;
+            }
+
+            if (newPass.length < 4) {
+                showToast('New passcode must be at least 4 characters long.', 'error');
+                return;
+            }
+
+            if (newPass !== confirmPass) {
+                showToast('New passcodes do not match.', 'error');
+                return;
+            }
+
+            setStoredPasscode(newPass);
+            closePasscodeModal();
+            showToast('Admin passcode updated successfully! Remember your new passcode.');
+        });
+    }
+}
+
+// ==========================================
+// --- 5. FLOATING ADMIN DOCK SHORTCUTS ---
+// ==========================================
+function setupAdminDock() {
+    const dockEditProf = document.getElementById('dockEditProfileBtn');
+    const dockAddSkill = document.getElementById('dockAddSkillBtn');
+    const dockAddProj = document.getElementById('dockAddProjectBtn');
+    const dockUploadVid = document.getElementById('dockUploadVideoBtn');
+    const dockPasscode = document.getElementById('dockChangePasscodeBtn');
+    const dockLogout = document.getElementById('dockLogoutBtn');
+
+    if (dockEditProf) dockEditProf.addEventListener('click', openProfileEditModal);
+    if (dockAddSkill) dockAddSkill.addEventListener('click', () => openSkillModal());
+    if (dockAddProj) dockAddProj.addEventListener('click', () => openProjectModal());
+    if (dockUploadVid) dockUploadVid.addEventListener('click', () => {
+        const uploadModalBtn = document.getElementById('openUploadModalBtn');
+        if (uploadModalBtn) uploadModalBtn.click();
+    });
+    if (dockPasscode) dockPasscode.addEventListener('click', openPasscodeModal);
+    if (dockLogout) dockLogout.addEventListener('click', logoutAdmin);
 }
 
 // ==========================================
@@ -392,7 +1131,6 @@ const sampleVideos = [
     }
 ];
 
-// Active state
 let allVideos = [];
 let activeFilter = 'all';
 let currentActiveObjectUrls = new Map();
@@ -507,10 +1245,8 @@ function renderVideos() {
             <span class="video-badge-pill">${escapeHtml(c)}</span>
         `).join('');
 
-        // My Upload badge (only shown to admin or with custom tag)
         const isCustomBadge = (item.isCustom && isAdmin) ? `<span class="video-badge custom-badge"><i class='bx bx-check'></i> My Upload</span>` : '';
         
-        // Card action buttons (Edit & Delete) — ONLY visible in Admin mode!
         const cardActionBtns = (item.isCustom && isAdmin) ? `
             <div class="card-action-btns">
                 <button class="btn-icon-secondary edit-categories-btn" data-id="${item.id}" title="Change Categories">
@@ -546,7 +1282,6 @@ function renderVideos() {
         `;
     }).join('');
 
-    // Attach delete handlers
     grid.querySelectorAll('.delete-video-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -555,7 +1290,6 @@ function renderVideos() {
         });
     });
 
-    // Attach edit categories handlers
     grid.querySelectorAll('.edit-categories-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -597,10 +1331,8 @@ async function initVideos() {
             return { ...item, categories, isCustom: true };
         });
 
-        // Try fetching portable static videos.json or upload_video.php if served over HTTP/HTTPS
         let externalVideos = [];
         if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
-            // 1. Static videos.json (Portable for GitHub Pages, Netlify, Vercel)
             try {
                 const jsonRes = await fetch('videos.json');
                 if (jsonRes.ok) {
@@ -609,11 +1341,8 @@ async function initVideos() {
                         externalVideos = [...externalVideos, ...jsonData];
                     }
                 }
-            } catch (e) {
-                // Static videos.json not present or unreadable
-            }
+            } catch (e) {}
 
-            // 2. PHP server endpoint (if running on Apache / PHP host)
             try {
                 const phpRes = await fetch('upload_video.php');
                 if (phpRes.ok) {
@@ -622,12 +1351,9 @@ async function initVideos() {
                         externalVideos = [...externalVideos, ...phpData];
                     }
                 }
-            } catch (e) {
-                // PHP endpoint not active
-            }
+            } catch (e) {}
         }
 
-        // Deduplicate
         const existingIds = new Set(processedStored.map(v => v.id));
         const filteredExternal = [];
         externalVideos.forEach(v => {
@@ -637,7 +1363,6 @@ async function initVideos() {
             }
         });
 
-        // Combine custom uploads + external/static videos + fallback sample items
         const baseSamples = filteredExternal.length > 0 ? filteredExternal : sampleVideos;
         allVideos = [...processedStored, ...baseSamples];
         renderVideos();
@@ -648,7 +1373,6 @@ async function initVideos() {
     }
 }
 
-// Delete video (Protected)
 async function deleteVideo(id) {
     if (!isAdminLoggedIn()) {
         showToast('Unauthorized: You must be in Admin mode to delete videos.', 'error');
@@ -665,7 +1389,6 @@ async function deleteVideo(id) {
             currentActiveObjectUrls.delete(id);
         }
 
-        // If server video, notify server with admin passcode
         if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
             try {
                 const formData = new FormData();
@@ -976,6 +1699,10 @@ function setupUploadModal() {
             closeVideoPlayer();
             closeEditCategoryModal();
             closeAdminLoginModal();
+            closeProfileEditModal();
+            closeSkillModal();
+            closeProjectModal();
+            closePasscodeModal();
         }
     });
 
@@ -1102,7 +1829,7 @@ function setupUploadModal() {
             }
 
             if (currentUploadSource === 'url' && !urlInput) {
-                showToast('Please provide a valid video link.', 'error');
+                showToast('Please provide a valid video link or path.', 'error');
                 return;
             }
 
@@ -1142,7 +1869,6 @@ function setupUploadModal() {
                         isCustom: true
                     });
 
-                    // Server upload with admin passcode
                     tryServerUpload(selectedVideoFile, title, categories.join(','), software, desc);
                 } else {
                     const ytInfo = getYouTubeInfo(urlInput);
@@ -1197,7 +1923,6 @@ function setupUploadModal() {
     }
 }
 
-// Background sync to upload_video.php if running on PHP server
 async function tryServerUpload(file, title, category, software, desc) {
     if (window.location.protocol !== 'http:' && window.location.protocol !== 'https:') {
         return;
@@ -1279,23 +2004,32 @@ function setupDataPortability() {
             }
 
             try {
-                const stored = await getStoredVideos();
-                // Strip raw binary Blobs from JSON export to keep JSON clean & portable
-                const exportable = (stored.length > 0 ? stored : allVideos).map(v => {
+                const storedVideos = await getStoredVideos();
+                const exportableVideos = (storedVideos.length > 0 ? storedVideos : allVideos).map(v => {
                     const item = { ...v };
                     delete item.videoBlob;
                     return item;
                 });
 
-                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportable, null, 2));
+                // Full portfolio package
+                const fullBackup = {
+                    profile: getProfile(),
+                    skills: getSkills(),
+                    projects: getProjects(),
+                    videos: exportableVideos,
+                    passcode: getStoredPasscode(),
+                    exportDate: new Date().toISOString()
+                };
+
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(fullBackup, null, 2));
                 const downloadAnchor = document.createElement('a');
                 downloadAnchor.setAttribute("href", dataStr);
-                downloadAnchor.setAttribute("download", "videos.json");
+                downloadAnchor.setAttribute("download", "portfolio-backup.json");
                 document.body.appendChild(downloadAnchor);
                 downloadAnchor.click();
                 downloadAnchor.remove();
 
-                showToast('Exported videos.json! Save it in your Portfolio folder to share everywhere.');
+                showToast('Exported complete portfolio-backup.json! Save this anywhere to restore everything.');
             } catch (err) {
                 console.error('Export error:', err);
                 showToast('Failed to export data.', 'error');
@@ -1321,21 +2055,32 @@ function setupDataPortability() {
             reader.onload = async (event) => {
                 try {
                     const imported = JSON.parse(event.target.result);
-                    if (!Array.isArray(imported)) {
-                        throw new Error('Invalid JSON format: expected an array of videos');
-                    }
 
-                    for (const item of imported) {
-                        if (item.id && item.title) {
-                            await saveVideoToDB(item);
+                    // Check if full backup object or array of videos
+                    if (imported && typeof imported === 'object' && !Array.isArray(imported)) {
+                        if (imported.profile) saveProfile(imported.profile);
+                        if (imported.skills) saveSkillsList(imported.skills);
+                        if (imported.projects) saveProjectsList(imported.projects);
+                        if (imported.passcode) setStoredPasscode(imported.passcode);
+                        if (Array.isArray(imported.videos)) {
+                            for (const v of imported.videos) {
+                                if (v.id && v.title) await saveVideoToDB(v);
+                            }
                         }
+                        await initVideos();
+                        showToast('Complete portfolio backup restored successfully!');
+                    } else if (Array.isArray(imported)) {
+                        for (const item of imported) {
+                            if (item.id && item.title) await saveVideoToDB(item);
+                        }
+                        await initVideos();
+                        showToast(`Imported ${imported.length} showcase items successfully!`);
+                    } else {
+                        throw new Error('Unsupported JSON format');
                     }
-
-                    await initVideos();
-                    showToast(`Imported ${imported.length} showcase items successfully!`);
                 } catch (err) {
                     console.error('Import error:', err);
-                    showToast('Failed to import videos.json: ' + err.message, 'error');
+                    showToast('Failed to import backup: ' + err.message, 'error');
                 }
             };
             reader.readAsText(file);
@@ -1360,6 +2105,12 @@ function registerServiceWorker() {
 // --- RUN ON PAGE READY ---
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
+    setupProfileManager();
+    setupSkillsManager();
+    setupProjectsManager();
+    setupPasscodeManager();
+    setupAdminDock();
+
     initVideos();
     setupAdminLoginModal();
     checkUrlForAdminKey();
