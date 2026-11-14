@@ -597,28 +597,49 @@ async function initVideos() {
             return { ...item, categories, isCustom: true };
         });
 
-        // Try fetching server-published videos if served over HTTP/HTTPS
-        let serverVideos = [];
+        // Try fetching portable static videos.json or upload_video.php if served over HTTP/HTTPS
+        let externalVideos = [];
         if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+            // 1. Static videos.json (Portable for GitHub Pages, Netlify, Vercel)
             try {
-                const res = await fetch('upload_video.php');
-                if (res.ok) {
-                    const data = await res.json();
-                    if (Array.isArray(data)) {
-                        serverVideos = data;
+                const jsonRes = await fetch('videos.json');
+                if (jsonRes.ok) {
+                    const jsonData = await jsonRes.json();
+                    if (Array.isArray(jsonData)) {
+                        externalVideos = [...externalVideos, ...jsonData];
                     }
                 }
             } catch (e) {
-                // PHP server not configured or static host
+                // Static videos.json not present or unreadable
+            }
+
+            // 2. PHP server endpoint (if running on Apache / PHP host)
+            try {
+                const phpRes = await fetch('upload_video.php');
+                if (phpRes.ok) {
+                    const phpData = await phpRes.json();
+                    if (Array.isArray(phpData)) {
+                        externalVideos = [...externalVideos, ...phpData];
+                    }
+                }
+            } catch (e) {
+                // PHP endpoint not active
             }
         }
 
         // Deduplicate
         const existingIds = new Set(processedStored.map(v => v.id));
-        const filteredServer = serverVideos.filter(v => !existingIds.has(v.id));
+        const filteredExternal = [];
+        externalVideos.forEach(v => {
+            if (!existingIds.has(v.id)) {
+                existingIds.add(v.id);
+                filteredExternal.push(v);
+            }
+        });
 
-        // Combine custom uploads + server videos + sample showcase items
-        allVideos = [...processedStored, ...filteredServer, ...sampleVideos];
+        // Combine custom uploads + external/static videos + fallback sample items
+        const baseSamples = filteredExternal.length > 0 ? filteredExternal : sampleVideos;
+        allVideos = [...processedStored, ...baseSamples];
         renderVideos();
     } catch (err) {
         console.error('Error loading videos:', err);
@@ -1243,6 +1264,99 @@ function setupCategoryFilters() {
 }
 
 // ==========================================
+// --- DATA PORTABILITY: EXPORT & IMPORT ---
+// ==========================================
+function setupDataPortability() {
+    const exportBtn = document.getElementById('exportDataBtn');
+    const importBtn = document.getElementById('importDataBtn');
+    const importInput = document.getElementById('importFileInput');
+
+    if (exportBtn) {
+        exportBtn.addEventListener('click', async () => {
+            if (!isAdminLoggedIn()) {
+                showToast('Please unlock Admin mode first.', 'error');
+                return;
+            }
+
+            try {
+                const stored = await getStoredVideos();
+                // Strip raw binary Blobs from JSON export to keep JSON clean & portable
+                const exportable = (stored.length > 0 ? stored : allVideos).map(v => {
+                    const item = { ...v };
+                    delete item.videoBlob;
+                    return item;
+                });
+
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportable, null, 2));
+                const downloadAnchor = document.createElement('a');
+                downloadAnchor.setAttribute("href", dataStr);
+                downloadAnchor.setAttribute("download", "videos.json");
+                document.body.appendChild(downloadAnchor);
+                downloadAnchor.click();
+                downloadAnchor.remove();
+
+                showToast('Exported videos.json! Save it in your Portfolio folder to share everywhere.');
+            } catch (err) {
+                console.error('Export error:', err);
+                showToast('Failed to export data.', 'error');
+            }
+        });
+    }
+
+    if (importBtn && importInput) {
+        importBtn.addEventListener('click', () => {
+            if (!isAdminLoggedIn()) {
+                showToast('Please unlock Admin mode first.', 'error');
+                return;
+            }
+            importInput.value = '';
+            importInput.click();
+        });
+
+        importInput.addEventListener('change', (e) => {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async (event) => {
+                try {
+                    const imported = JSON.parse(event.target.result);
+                    if (!Array.isArray(imported)) {
+                        throw new Error('Invalid JSON format: expected an array of videos');
+                    }
+
+                    for (const item of imported) {
+                        if (item.id && item.title) {
+                            await saveVideoToDB(item);
+                        }
+                    }
+
+                    await initVideos();
+                    showToast(`Imported ${imported.length} showcase items successfully!`);
+                } catch (err) {
+                    console.error('Import error:', err);
+                    showToast('Failed to import videos.json: ' + err.message, 'error');
+                }
+            };
+            reader.readAsText(file);
+        });
+    }
+}
+
+// ==========================================
+// --- PWA / OFFLINE SERVICE WORKER ---
+// ==========================================
+function registerServiceWorker() {
+    if ('serviceWorker' in navigator && (window.location.protocol === 'http:' || window.location.protocol === 'https:')) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js')
+                .then((reg) => console.log('Portfolio offline ServiceWorker registered:', reg.scope))
+                .catch((err) => console.warn('Service worker registration:', err));
+        });
+    }
+}
+
+// ==========================================
 // --- RUN ON PAGE READY ---
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
@@ -1252,4 +1366,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setupUploadModal();
     setupEditCategoryModal();
     setupCategoryFilters();
+    setupDataPortability();
+    registerServiceWorker();
 });

@@ -1,0 +1,41 @@
+[
+  {
+    "id": "showcase-1",
+    "title": "Cinematic Travel & Adventure Showreel",
+    "category": "Cinematic",
+    "categories": ["Cinematic"],
+    "software": "Premiere Pro, DaVinci Resolve",
+    "description": "Immersive travel piece featuring natural color grading, dynamic speed ramping, custom visual flow, and rhythmic audio design.",
+    "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+    "thumbnail": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+    "sourceType": "url",
+    "isCustom": false,
+    "createdAt": "2026-11-12T19:00:00Z"
+  },
+  {
+    "id": "showcase-2",
+    "title": "Commercial Brand & Product Promo",
+    "category": "Commercial",
+    "categories": ["Commercial"],
+    "software": "After Effects, Premiere Pro",
+    "description": "High-energy commercial advertisement with kinetic typography, modern lower-thirds, product highlight pacing, and sound effects.",
+    "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+    "thumbnail": "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800&q=80",
+    "sourceType": "url",
+    "isCustom": false,
+    "createdAt": "2026-11-12T19:00:00Z"
+  },
+  {
+    "id": "showcase-3",
+    "title": "Viral Social Media Reel / Short",
+    "category": "Reels/Shorts",
+    "categories": ["Reels/Shorts"],
+    "software": "CapCut Pro, Premiere Pro",
+    "description": "Fast-paced vertical reel designed for maximum hook retention, beat-synchronized transitions, and animated subtitles.",
+    "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyBlazes.mp4",
+    "thumbnail": "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80",
+    "sourceType": "url",
+    "isCustom": false,
+    "createdAt": "2026-11-12T19:00:00Z"
+  }
+]

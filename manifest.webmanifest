@@ -1,0 +1,18 @@
+{
+  "name": "Yoseph Tilahun - Portfolio",
+  "short_name": "Yoseph",
+  "description": "Portfolio of Yoseph Tilahun - Web Developer & Video Editor",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b0c10",
+  "theme_color": "#66fcf1",
+  "icons": [
+    {
+      "src": "image/yose.JPG",
+      "sizes": "192x192 512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}

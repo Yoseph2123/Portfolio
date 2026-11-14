@@ -4,6 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Yoseph Tilahun - Portfolio</title>
+    <!-- PWA & Mobile Portability Meta -->
+    <meta name="theme-color" content="#0b0c10" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" type="image/jpeg" href="image/yose.JPG" />
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
     <!-- Boxicons for modern icons -->
@@ -212,6 +219,13 @@
                         <button class="btn btn-primary upload-trigger-btn admin-only" id="openUploadModalBtn">
                             <i class='bx bx-cloud-upload'></i> Upload Video
                         </button>
+                        <button class="btn btn-secondary btn-sm admin-only" id="exportDataBtn" title="Export portfolio showcase to portable videos.json">
+                            <i class='bx bx-download'></i> Export Data
+                        </button>
+                        <button class="btn btn-secondary btn-sm admin-only" id="importDataBtn" title="Import videos.json onto this device">
+                            <i class='bx bx-upload'></i> Import Data
+                        </button>
+                        <input type="file" id="importFileInput" accept=".json" style="display: none;" />
                         <button class="admin-auth-toggle-btn" id="adminAuthBtn" title="Creator Admin Access" aria-label="Admin Access">
                             <i class='bx bx-lock-alt'></i>
                         </button>
@@ -337,13 +351,13 @@
                     </div>
                 </div>
 
-                <!-- Source: Video URL/Embed -->
+                <!-- Source: Video URL/Embed or Portable Path -->
                 <div class="source-content" id="sourceUrlContent" style="display: none;">
                     <div class="input-group">
-                        <input type="url" id="videoUrlInput" placeholder=" " />
-                        <label for="videoUrlInput">Video URL (YouTube, Vimeo, or direct MP4 link)</label>
+                        <input type="text" id="videoUrlInput" placeholder=" " />
+                        <label for="videoUrlInput">Video URL (YouTube, MP4, or local path e.g. videos/my_video.mp4)</label>
                     </div>
-                    <small class="field-hint">Paste a YouTube link or direct video URL to embed</small>
+                    <small class="field-hint">Paste a YouTube link or a portable relative path like <code>videos/your_file.mp4</code></small>
                 </div>
 
                 <!-- Video Title -->
